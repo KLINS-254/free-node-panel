@@ -6,7 +6,6 @@ import Link from 'next/link';
 export default function ServerControlPanel({ params }) {
   const [activeTab, setActiveTab] = useState('General');
 
-  // Server state based on screenshot details
   const serverDetails = {
     name: 'Kino',
     identifier: params.id || '5c893721',
@@ -25,15 +24,13 @@ export default function ServerControlPanel({ params }) {
     <div style={{ backgroundColor: '#0d0e15', color: '#fff', minHeight: '100vh', padding: '20px', fontFamily: 'sans-serif' }}>
       <div style={{ maxWidth: '700px', margin: '0 auto' }}>
         
-        {/* Navigation back to Dashboard */}
         <div style={{ marginBottom: '20px' }}>
           <Link href="/dashboard" style={{ color: '#aaa', textDecoration: 'none', fontSize: '14px' }}>
             ← Back to Dashboard
           </Link>
         </div>
 
-        {/* Tab Header Navigation */}
-        <div style={{ display: 'flex', borderBottom: '1px solid #222', marginBottom: '20px', gap: '15px' }}>
+        <div style={{ display: 'flex', borderBottom: '1px solid #222', marginBottom: '20px', gap: '15px', overflowX: 'auto' }}>
           {['General', 'Modify server', 'Change password', 'Change type', 'Access server'].map((tab) => (
             <button
               key={tab}
@@ -47,6 +44,7 @@ export default function ServerControlPanel({ params }) {
                 cursor: 'pointer',
                 fontWeight: activeTab === tab ? 'bold' : 'normal',
                 fontSize: '14px',
+                whiteSpace: 'nowrap',
               }}
             >
               {tab === 'Access server' ? '🚀 Access server' : tab}
@@ -54,15 +52,12 @@ export default function ServerControlPanel({ params }) {
           ))}
         </div>
 
-        {/* Tab Content: General Details */}
         {activeTab === 'General' && (
           <div style={{ backgroundColor: '#13151f', border: '1px solid #222', borderRadius: '12px', padding: '25px' }}>
-            
             <h3 style={{ fontSize: '16px', color: '#aaa', marginTop: 0 }}>Description</h3>
             <p style={{ color: '#666', fontSize: '14px', fontStyle: 'italic', marginBottom: '30px' }}>No description provided</p>
 
             <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' }}>Server details</h3>
-            
             <div style={{ display: 'grid', gridTemplateColumns: '150px 1fr', rowGap: '12px', fontSize: '14px', marginBottom: '30px' }}>
               <span style={{ color: '#888' }}>Name</span>
               <span>{serverDetails.name}</span>
@@ -87,7 +82,6 @@ export default function ServerControlPanel({ params }) {
             </div>
 
             <h3 style={{ fontSize: '18px', fontWeight: 'bold', marginBottom: '15px' }}>Service information</h3>
-            
             <div style={{ display: 'grid', gridTemplateColumns: '150px 1fr', rowGap: '12px', fontSize: '14px' }}>
               <span style={{ color: '#888' }}>Renew period</span>
               <span>{serverDetails.renewPeriod}</span>
@@ -104,7 +98,6 @@ export default function ServerControlPanel({ params }) {
           </div>
         )}
 
-        {/* Tab Content: Access Server */}
         {activeTab === 'Access server' && (
           <div style={{ backgroundColor: '#13151f', border: '1px solid #222', borderRadius: '12px', padding: '25px', textAlign: 'center' }}>
             <h3 style={{ fontSize: '18px', fontWeight: 'bold' }}>Open Node.js Web Console</h3>
