@@ -1,36 +1,38 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const [serverName, setServerName] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const router = useRouter();
 
-  const handleCreate = async (e) => {
+  const handleCreate = (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
 
-    try {
-      const res = await fetch('/api/servers/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: serverName }),
-      });
+    // Generate a new server object
+    const newServer = {
+      id: Math.random().toString(36).substring(2, 9),
+      name: serverName || 'NodeJS-Server',
+      type: 'NodeJs 24',
+      status: 'online',
+      ip: `51.75.118.${Math.floor(Math.random() * 200 + 10)}:${Math.floor(Math.random() * 8000 + 10000)}`,
+      ram: 308,
+      disk: 716,
+      cpu: 25,
+      created: new Date().toLocaleDateString(),
+    };
 
-      const data = await res.json();
-      if (data.success) {
-        setMessage('Server created successfully!');
-        setServerName('');
-      } else {
-        setMessage('Failed to create server. Check backend setup.');
-      }
-    } catch (err) {
-      setMessage('An error occurred while creating server.');
-    } finally {
-      setLoading(false);
-    }
+    // Save to local storage
+    const existingServers = JSON.parse(localStorage.getItem('my_servers') || '[]');
+    existingServers.push(newServer);
+    localStorage.setItem('my_servers', JSON.stringify(existingServers));
+
+    setLoading(false);
+    // Redirect to Dashboard
+    router.push('/dashboard');
   };
 
   return (
@@ -72,8 +74,6 @@ export default function Home() {
           >
             {loading ? 'Creating Server...' : 'Create server'}
           </button>
-
-          {message && <p style={{ marginTop: '15px', textAlign: 'center', color: '#c084fc' }}>{message}</p>}
         </form>
       </div>
     </div>
